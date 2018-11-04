@@ -52,6 +52,6 @@ were the enemy assemblies. If I make a similar project in the future I'll get ri
 breadboards and just solder the window assemblies and hot glue them to the back of the main MDF
 board.
 
-The real expense here is the Microbits (~$20 each) and the breakout boards (~$30). My aim is
+The real expense here is the Microbits (about $20 each) and the breakout boards (about $30). My aim is
 to replace these with my own circuit for the servos and replacing the Microbits with ESP32
 boards. That should bring the cost of the controllers down to about $12.
