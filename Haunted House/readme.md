@@ -14,15 +14,14 @@ Code is in Micropython and currently split over two Microbit boards:
 - A standard Microbit for the LED and LDRs (I'm using a [Kitronik edge connector breakout board](https://www.kitronik.co.uk/5601b-edge-connector-breakout-board-for-bbc-microbit-pre-built.html) but anything will do there)
 The two boards communicate via the Microbit's radio module for state syncing.
 
-I wrote two basic classes to handle a 'window' in my house. In the servo board, this window class handles what
-the 'up' and 'down' angles are for each servo, since cheap servos have a bit of variation in them, their current
-state, and their position in the queue for raising and lowering.
-
-In the LED/LDR board the window class handles the LED state, which is controlled via a transistor, and contains
-helper functions for toggling state, determining whether a light beam has hit the enemy and so on.
+The LED/LDR board handles the LED state, which is controlled via a transistor, and contains
+helper functions for toggling state, determining whether a light beam has hit the enemy and so on. The
+servo board handles basic servo movement as well as keeping track of a queue for when to raise and lower
+enemies.
 
 I have tried to keep both bits of code as tight as possible timing-wise to help keep things in sync and not
-block radio calls, but have included small event loop pauses for battery efficiency purposes.
+block radio calls, but have included small event loop pauses for battery efficiency purposes and also to help
+cope with events repeating too quickly for physical objects to keep up with.
 
 ## Design
 The physical parts of the house were cut out of 3mm MDF on the school's laser cutter. My workflow for this is
