@@ -30,7 +30,7 @@ class Window():
     
     def hit_test(self):
         "Return True if a bright light is detected, but only if the LEDs are on (servo is in up state)."
-        return self.light() > 900 if self.led_state else False
+        return self.light() > 920 if self.led_state else False
     
     def short(self):
         return self.short_name
@@ -63,14 +63,14 @@ while True:
     for w in (tl, tr, bl, br, tm):
         if w.hit_test():
             # notify the servo board which window has been hit and turn off the LEDs
-            radio.send("window hit "+w.short())
+            radio.send("w h "+w.short())
             w.toggle_led()
     # Parse message queue
     r = radio.receive()
     if r:
         # servo board has communicated that a servo has been moved up or down
         # so toggle the LED state for this window
-        if r.startswith("servo down ") or r.startswith("servo up "):
+        if r.startswith("sv d ") or r.startswith("sv u "):
             windows[r[-2:]].toggle_led()
             
     
