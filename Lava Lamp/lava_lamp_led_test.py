@@ -3,10 +3,10 @@ import neopixel
 from random import randint
 
 np = neopixel.NeoPixel(pin12, 1)
-h, s, v = (0.0, 1.0, 0.5)
-targ = v
-direction = 1
-step = 0.001
+h, s, v = (0.0, 1.0, 0.5) # initial colour values
+targ = v # target value to shift to, will immediately calculate a new one
+direction = 1 # will be overwritten as soon as a target value is found
+step = 0.001 # speed of brightness and hue transitions
 
 def hsv_to_rgb(h, s, v):
   # Algorithm from: https://stackoverflow.com/a/26856771
@@ -27,7 +27,8 @@ def hsv_to_rgb(h, s, v):
   if i == 5: return (v, p, q)
 
 def get_new_trend(v):
-  #
+  # Calculate a new target brightness value, and return the
+  # new value and the direction multiplier for the step value.
   tl = randint(1, 4) / 10
   # choose direction for trend (-ve dimmer, +ve brighter)
   if (v + tl) >= 1.0:
@@ -38,13 +39,13 @@ def get_new_trend(v):
     td = -1 if randint(1,2) == 1 else 1
   to = round(v + tl * td, 1)
 
-  return (to, td) # return the new target vibrance and direction
+  return (to, td) # return the new target value and direction
 
 while True:
   a = button_a.was_pressed()
   b = button_b.was_pressed()
 
-  h = (h + 0.001) % 1 # cycle through hue space
+  h = (h + step) % 1 # cycle through hue space
   if (direction == -1 and v >= targ) or (direction == 1 and v <= targ):
     v += step * direction
   else:
