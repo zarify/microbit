@@ -10,4 +10,10 @@ It uses three servos:
 
 I used a variation on my linear actuator design for the elevation servo, with a 90 degree guide piece to help with alignment.
 
-The whole thing is a bit fiddly to assemble, so I'll probably make some revisions down the track, particularly around the actuator rod.
+Version 2 has been updated to be a bit easier to assemble (particularly around the actuator rod) and distribute the weight on the lifter a bit better to cope with the weight of the battery.
+
+![Front View](front_view.jpg)
+
+![Side View](side_view.jpg)
+
+![Top View](top_view.jpg)
