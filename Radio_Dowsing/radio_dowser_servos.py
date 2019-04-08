@@ -6,7 +6,7 @@ radio.config(channel=42)
 display.show(Image.NO)
 detecting = False
 
-# rolling average of last X readings (1.5s)
+# rolling average of last X readings
 last = []
 keep_last = 25 # how long the rolling average should be
 perc_avg = 0.0
@@ -33,16 +33,20 @@ def hsv_to_rgb(h, s, v):
 
 def move_servos(a):
     right = (pin8, 40) # pin connected and base angle
-    left = (pin12, 120)
-    left[0].write_analog(left[1] + a)
-    right[0].write_analog(right[1] - a)
+    left = (pin12, 110)
+    left[0].write_analog(left[1] - a)
+    right[0].write_analog(right[1]+ a)
 
 def set_LEDs(p):
+    # set the LED colour to the hue value gained by calculating
+    # the percentage signal strength we measured
     r, g, b = hsv_to_rgb(1.0 - p, 1.0, 0.2) # take the percentage strength and map to hue
     np[0] = (int(r), int(g), int(b))
     np.show()
 
 while True:
+    # Start without the radio on. Use the A button to toggle radio status.
+    # Show a cute wifi icon when the radio is on, otherwise an X.
     if button_a.was_pressed():
         detecting = not detecting
         if detecting:
@@ -69,7 +73,7 @@ while True:
         perc = rssi / 70
 
     else:
-        perc = 1.0
+        perc = 1.0 # default to minimum detected amount if no signal so servos are folded
 
     # Do this as a rolling average to smooth out spiky changes in signal strength
     last.append(perc)
@@ -77,8 +81,10 @@ while True:
         del last[0]
     perc_avg = sum(last) / len(last)
 
+    # calculate angle offset for each of the servos to move by
     angle = 90 - int(perc_avg * 90) # subtract from 90 since 0 is strong, 255 weak
 
+    # Can use this for the plotter function in Mu
     #print((rssi, perc_avg, angle))
 
     # shift servos to this angle (accounting for two opposite sides)
@@ -86,4 +92,5 @@ while True:
     # change LED colours if relevant
     set_LEDs(perc_avg)
     # let servos move to any new positions before checking again
+    # 50ms is not much, but movement should be minimal with each step
     sleep(50)

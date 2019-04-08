@@ -5,7 +5,7 @@ radio.config(channel=42,power=2)
 radio.on()
 
 while True:
-    radio.send("ping")
+    # radio.send("ping") # uncomment for both send and receive behaviour
     r = radio.receive_full()
     if r:
         msg, rssi, ts = r
