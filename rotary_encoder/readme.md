@@ -1,0 +1,6 @@
+# Rotary Encoder Test Code
+This is some test code which I wrote to see if the cheap 360 degree rotary encoders I picked up off AliExpress worked. The model listed on AliExpress was HW-040, although the [documentation [1]](http://henrysbench.capnfatz.com/henrys-bench/arduino-sensors-and-input/keyes-ky-040-arduino-rotary-encoder-user-manual/) [I found [2]](https://circuitdigest.com/microcontroller-projects/interfacing-rotary-encoder-with-arduino) listed it as a Keyes KY-040.
+
+This seems to work fine in MicroPython as long as there isn't any serial communication happening each iteration of the while loop (or even at each change of the counter). That seems to slow the loop down enough that it misses changes of state and throws out the count. I haven't gotten any working code using MakeCode, even though I tried essentially the same algorithm, which is odd.
+
+This rotary encoder has 30 steps one rotation, which makes it ideal for a future project I had in mind, which is making an automated Caesar Cipher machine where you can turn the dial (which turns an attached code wheel) to match letters, and then click the encoder button to wirelessly send the encoded letter to another Micro:bit.
