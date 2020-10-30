@@ -1,7 +1,6 @@
 from microbit import i2c
 from microbit import sleep, running_time
 from random import randint, choice
-import radio
 
 class KitronikServoBoard:
     BOARD_1 = 0x6A
@@ -94,9 +93,6 @@ class KitronikServoBoard:
             buf[1] = 0x00
         i2c.write(self.BOARD_1, buf, False)
 
-radio.config(channel=42)
-radio.on()
-
 class ServoController:
     board = KitronikServoBoard
     # Servo, UpAngle, DownAngle, IsUp, InQueue, CurrentAngle, UpTime, DownTime
@@ -126,11 +122,9 @@ class ServoController:
                 self.servos[servo][4] = False
                 self.servos[servo][3] = True
                 self.move(self, servo, reset=False)
-                radio.send("sv u "+servo)
             elif self.servos[servo][3] and now > self.servos[servo][7]:
                 self.move(self, servo, reset=False)
                 self.servos[servo][3] = False
-                radio.send("sv d "+servo)  
                 self.next_servo(self)
     
     def next_servo(self):
@@ -156,18 +150,11 @@ difficulty = 1
 for s in ("tl", "tm", "tr", "bl", "br"):
     SC.move(SC, s, reset=True)
 
-radio.send("sv rst")
 SC.next_servo(SC)
 SC.next_servo(SC)
 
 while True:
     now = running_time()
     SC.check_queue(SC, now)
-    
-    r = radio.receive()
-    if r:
-        if r.startswith("w h "):
-            s = r[-2:]
-            SC.move(SC, s, reset=True)
-            SC.next_servo(SC)
+
     sleep(50)
